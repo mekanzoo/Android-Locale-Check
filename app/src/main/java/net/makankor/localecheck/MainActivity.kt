@@ -39,13 +39,20 @@ class MainActivity : AppCompatActivity() {
             textDefault!!.text = Locale.getDefault().toString()
 
             val local = Locale.getAvailableLocales();
+            val otherList = ArrayList<Locale>()
             for (curLocale in local) {
                 if (!curLocale.displayCountry.trim().isEmpty()) {
                     list.add(curLocale)
+                } else {
+                    otherList.add(curLocale)
                 }
             }
 
-            Collections.sort(list, Comparator { t, t2 -> t.displayCountry.compareTo(t2.displayCountry) })
+            Collections.sort(list, { t, t2 ->
+                t.displayCountry.compareTo(t2.displayCountry)
+            })
+
+            list.addAll(otherList)
         }
 
         override fun getItemCount(): Int {
@@ -61,7 +68,12 @@ class MainActivity : AppCompatActivity() {
         override fun onBindViewHolder(holder: VH?, position: Int) {
             var curLocale = list[position]
 
-            holder!!.lblCountry!!.text = curLocale.displayCountry
+            var displayCountry = curLocale.displayCountry
+            if (displayCountry.trim().isEmpty()) {
+                displayCountry = getText(R.string.other_country).toString()
+            }
+
+            holder!!.lblCountry!!.text = displayCountry
             holder!!.lblLanguage!!.text = curLocale.displayLanguage
             holder!!.lblLocaleCode!!.text = curLocale.toString()
         }
