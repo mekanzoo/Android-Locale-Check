@@ -36,7 +36,7 @@ class MainActivity : AppCompatActivity() {
         val list = ArrayList<Locale>()
 
         init {
-            textDefault!!.text = Locale.getDefault().language
+            textDefault!!.text = Locale.getDefault().toString()
 
             val local = Locale.getAvailableLocales();
             for (curLocale in local) {
@@ -53,16 +53,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): VH? {
-            val view = LayoutInflater.from(parent!!.context).inflate(R.layout.table_content, parent, false) as View
+            val view = LayoutInflater.from(parent!!.context).inflate(R.layout.table_content, parent, false)
 
             return VH(view)
         }
 
         override fun onBindViewHolder(holder: VH?, position: Int) {
-            var curLocale = list.get(position)
+            var curLocale = list[position]
 
             holder!!.lblCountry!!.text = curLocale.displayCountry
             holder!!.lblLanguage!!.text = curLocale.displayLanguage
+            holder!!.lblLocaleCode!!.text = curLocale.toString()
         }
 
     }
@@ -70,10 +71,12 @@ class MainActivity : AppCompatActivity() {
     class VH(view: View) : RecyclerView.ViewHolder(view) {
         var lblCountry: TextView? = null
         var lblLanguage: TextView? = null
+        var lblLocaleCode: TextView? = null
 
         init {
             lblCountry = view.findViewById(R.id.lbl_country) as TextView
             lblLanguage = view.findViewById(R.id.lbl_language) as TextView
+            lblLocaleCode = view.findViewById(R.id.lbl_locale_code) as TextView
         }
     }
 
